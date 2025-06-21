@@ -48,3 +48,12 @@ git clone https://github.com/YOUR_USERNAME/keycloak-linkedin-spi.git
 cd keycloak-linkedin-spi
 mvn clean package
 
+### Version 2.0.0
+
+This version introduces support for setting the Keycloak `username` using the LinkedIn `vanityName`.
+
+- `username` will now be automatically set on user creation. 
+- `vanityName` is still available as a custom user attribute.
+
+Make sure Edit username is On in User info settings, you will find it in Realm settings --> Login
+
