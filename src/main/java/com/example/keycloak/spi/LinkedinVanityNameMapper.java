@@ -81,7 +81,7 @@ public class LinkedinVanityNameMapper extends AbstractClaimMapper {
 
     private void fetchAndSetAttributes(KeycloakSession session, UserModel user, BrokeredIdentityContext context) {
         String rawToken = context.getToken();
-        String accessToken = null;
+        String accessToken;
 
         try {
             JsonNode node = new ObjectMapper().readTree(rawToken);
@@ -102,6 +102,13 @@ public class LinkedinVanityNameMapper extends AbstractClaimMapper {
                 if (profile.getVanityName() != null) {
                     user.setAttribute("vanityName", Collections.singletonList(profile.getVanityName()));
                     logger.debugf("Set vanityName [%s] for user: %s", profile.getVanityName(), user.getUsername());
+
+                    try {
+                        user.setUsername(profile.getVanityName());
+                        logger.debugf("Username updated to vanityName: %s", profile.getVanityName());
+                    } catch (Exception e) {
+                        logger.warnf(" Failed to update username to vanityName: %s", e.getMessage());
+                    }
                 }
 
                 if (profile.getLocalizedHeadline() != null) {
